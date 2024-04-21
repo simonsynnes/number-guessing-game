@@ -1,6 +1,8 @@
 use std::io;
 use rand::Rng;
 
+const MAX_ATTEMPTS: u32 = 5;
+
 fn generate_random_number() -> u32 {
     rand::thread_rng().gen_range(1..=100)
 }
@@ -26,7 +28,7 @@ fn main() {
     println!("Number guessing game");
     let random_number = generate_random_number();
     let mut guess_attempts = 0;
-    
+    println!("Correct number spoiler: {}", random_number);
     loop {
         let user_input = read_user_input();
         let compare_result = compare_numbers(user_input, random_number);
@@ -35,8 +37,12 @@ fn main() {
 
         guess_attempts += 1;
 
-        if guess_attempts == 5 {
-            println!("You ran out of guesses! {}", guess_attempts);
+        if guess_attempts == MAX_ATTEMPTS {
+            println!("You ran out of guesses! The answer was: {}", random_number);
+            break;
+        }
+
+        if user_input == random_number {
             break;
         }
     }
